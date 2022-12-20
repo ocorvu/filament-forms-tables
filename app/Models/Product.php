@@ -9,4 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    public $fillable = [
+        'name',
+        'description',
+    ];
 }

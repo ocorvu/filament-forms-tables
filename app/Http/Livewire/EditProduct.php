@@ -18,24 +18,34 @@ class EditProduct extends Component implements HasForms
     public $name;
     public $description;
 
-    public function mount(): void
+    public function mount(Product $product): void
     {
         $this->form->fill([
-            'name' => 'Cordeiro',
-            'description' => 'Cortes mistos de cordeiro',
+            'name' => $this->product->name,
+            'description' => $this->product->description,
         ]);
     }
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('name')->required(),
+            TextInput::make('name')->unique(table: Product::class),
             MarkdownEditor::make('description')->required(),
         ];
     }
 
+    public function update(Product $product): void
+    {
+        $data = $this->form->getState();
+
+        $product->name = $data['name'];
+        $product->description = $data['description'];
+
+        $product->save();
+    }
+
     public function submit(): void
     {
-        //
+        $this->update($this->product);
     }
 
     public function render()

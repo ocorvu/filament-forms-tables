@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Livewire\CreateProduct;
 use App\Http\Livewire\EditProduct;
+use App\Http\Livewire\ShowProducts;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/edit', EditProduct::class);
+Route::get('/edit/{product}', EditProduct::class);
+
+Route::get('/create', CreateProduct::class);
+
+Route::get('/products', ShowProducts::class);
