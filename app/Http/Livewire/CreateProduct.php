@@ -29,7 +29,7 @@ class CreateProduct extends Component implements HasForms
     public function create(): void
     {
         Product::create($this->form->getState());
-        $this->form->clear();
+
     }
 
     public function submit(): void
