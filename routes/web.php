@@ -20,8 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/edit/{product}', EditProduct::class);
+Route::get('/edit/{product}', EditProduct::class)->name('products.edit');
 
-Route::get('/create', CreateProduct::class);
+Route::get('/create', CreateProduct::class)->name('products.create');
 
-Route::get('/products', ShowProducts::class);
+Route::get('/products', ShowProducts::class)->name('products.show');

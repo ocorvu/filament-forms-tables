@@ -28,7 +28,7 @@ class EditProduct extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('name')->unique(table: Product::class),
+            TextInput::make('name'),
             MarkdownEditor::make('description')->required(),
         ];
     }
