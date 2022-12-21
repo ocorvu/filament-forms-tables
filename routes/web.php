@@ -2,6 +2,7 @@
 
 use App\Http\Livewire\CreateProduct;
 use App\Http\Livewire\EditProduct;
+use App\Http\Livewire\ProductDetails;
 use App\Http\Livewire\ShowProducts;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,5 @@ Route::get('/edit/{product}', EditProduct::class)->name('products.edit');
 Route::get('/create', CreateProduct::class)->name('products.create');
 
 Route::get('/products', ShowProducts::class)->name('products.show');
+
+Route::get('/products/{product}', ProductDetails::class)->name('products.details');
