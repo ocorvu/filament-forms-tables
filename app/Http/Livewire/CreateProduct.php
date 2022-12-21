@@ -7,6 +7,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class CreateProduct extends Component implements HasForms
@@ -35,6 +36,11 @@ class CreateProduct extends Component implements HasForms
     public function submit(): void
     {
         $this->create();
+
+        Notification::make()
+            ->title('Saved successfully')
+            ->success()
+            ->send();
     }
 
     public function render()

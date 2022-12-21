@@ -7,6 +7,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class EditProduct extends Component implements HasForms
@@ -30,6 +31,7 @@ class EditProduct extends Component implements HasForms
         return [
             TextInput::make('name'),
             MarkdownEditor::make('description')->required(),
+            
         ];
     }
 
@@ -46,6 +48,11 @@ class EditProduct extends Component implements HasForms
     public function submit(): void
     {
         $this->update($this->product);
+
+        Notification::make()
+            ->title('Saved successfully')
+            ->success()
+            ->send();
     }
 
     public function render()

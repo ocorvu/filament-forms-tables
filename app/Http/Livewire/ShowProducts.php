@@ -20,8 +20,6 @@ class ShowProducts extends Component implements HasTable, HasForms
     use InteractsWithForms;
     use InteractsWithTable;
 
-    public $search;
-
     protected function getTableQuery(): Builder
     {
         return Product::query();
@@ -31,7 +29,7 @@ class ShowProducts extends Component implements HasTable, HasForms
     {
         return [ 
             Action::make('details')
-                ->url(fn (Product $record): string => route('products.edit', $record))
+                ->url(fn (Product $record): string => route('products.details', $record))
                 ->icon('heroicon-s-eye')
                 ->color('success')
                 ->label(false),
@@ -64,8 +62,6 @@ class ShowProducts extends Component implements HasTable, HasForms
     
     public function render()
     {
-        return view('livewire.show-products', [
-            'products' => Product::where('name', 'like', '%'.$this->search.'%')->get(),
-        ]);
+        return view('livewire.show-products');
     }
 }
