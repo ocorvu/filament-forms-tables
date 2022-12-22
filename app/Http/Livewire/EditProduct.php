@@ -4,11 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\Textarea;
 use Livewire\Component;
 
 class EditProduct extends Component implements HasForms
@@ -51,34 +51,28 @@ class EditProduct extends Component implements HasForms
                 ->minValue(0)
                 ->maxValue(999999,99)
                 ->placeholder('0.0'),
-            MarkdownEditor::make('description'),
+            Textarea::make('description')->rows(3),
             FileUpload::make('thumbnail')
                 ->image()
                 ->disk('public')
                 ->directory('thumbnails')
-                ->preserveFilenames()
-                ->imagePreviewHeight('250')
-                ->loadingIndicatorPosition('left')
-                ->panelAspectRatio('2:1')
+                ->panelAspectRatio('9:1')
                 ->panelLayout('integrated')
                 ->removeUploadedFileButtonPosition('right')
-                ->uploadButtonPosition('left')
-                ->uploadProgressIndicatorPosition('left')
-            
         ];
     }
 
     public function update(Product $product): void
-    {
+    {   
         $data = $this->form->getState();
-
+        
         $product->barcode = $data['barcode'];
         $product->name = $data['name'];
         $product->quantity = $data['quantity'];
         $product->price = $data['price'];
         $product->description = $data['description'];
         $product->thumbnail = $data['thumbnail'];
-
+        
         $product->save();
     }
 
@@ -91,7 +85,6 @@ class EditProduct extends Component implements HasForms
             ->success()
             ->send();
     }
-
 
     public function render()
     {

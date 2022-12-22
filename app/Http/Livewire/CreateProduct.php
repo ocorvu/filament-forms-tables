@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -43,19 +43,14 @@ class CreateProduct extends Component implements HasForms
                 ->minValue(0)
                 ->maxValue(999999,99)
                 ->placeholder('0.0'),
-            MarkdownEditor::make('description'),
+            Textarea::make('description')->rows(3),
             FileUpload::make('thumbnail')
                 ->image()
                 ->disk('public')
                 ->directory('thumbnails')
-                ->preserveFilenames()
-                ->imagePreviewHeight('250')
-                ->loadingIndicatorPosition('left')
-                ->panelAspectRatio('2:1')
+                ->panelAspectRatio('9:1')
                 ->panelLayout('integrated')
                 ->removeUploadedFileButtonPosition('right')
-                ->uploadButtonPosition('left')
-                ->uploadProgressIndicatorPosition('left')
         ];
     }
 
