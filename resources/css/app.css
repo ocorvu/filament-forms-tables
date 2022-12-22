@@ -7,3 +7,11 @@
 .submit {
     @apply font-sans font-medium block mx-auto mt-2 px-2 bg-indigo-300 hover:bg-indigo-400 rounded-md hover:ring-2 hover:ring-indigo-300;
 }
+
+.active {
+    @apply bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium;
+}
+
+.not-active {
+    @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
+}

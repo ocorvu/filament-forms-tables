@@ -29,18 +29,18 @@
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <a href="{{ route('products.show') }}" class="
                 @if (request()->route()->uri === 'products')
-                  bg-gray-900 text-white
+                  active
                 @else
-                  text-gray-300 hover:bg-gray-700 hover:text-white
-                @endif px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Products</a>
+                  not-active
+                @endif" aria-current="page">Products</a>
   
                 <a href="{{ route('products.create') }}" class="
                   @if (request()->route()->uri === 'create')
-                   bg-gray-900 text-white
+                   active
                   @else
-                    text-gray-300 hover:bg-gray-700 hover:text-white
+                    not-active
                   @endif 
-                  px-3 py-2 rounded-md text-sm font-medium">New</a>
+                  ">New</a>
               </div>
             </div>
           </div>
