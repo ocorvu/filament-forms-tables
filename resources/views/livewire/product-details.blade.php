@@ -4,7 +4,7 @@
             <h1 class="text-xl font-bold">{{ $name }}</h1>
             <h2 class="italic font-sans text-sm">GTIN: {{ $barcode }}</h2>
         </div>
-        <img src="{{ asset("/storage/{$thumbnail}") }}" alt="{{ $name }} thumbnail">
+        <img src="{{ asset("{$thumbnail}") }}" alt="{{ $name }} thumbnail">
     </div>
     <p class="mt-2">Quantity: {{ $quantity }}</p>
     <p class="mt-2">Price: {{ $price }}</p>

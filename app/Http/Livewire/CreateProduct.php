@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class CreateProduct extends Component implements HasForms
@@ -30,33 +31,56 @@ class CreateProduct extends Component implements HasForms
                 ->autofocus()
                 ->unique(table: Product::class)
                 ->required(),
-            TextInput::make('name')
-                ->unique(table: Product::class)
-                ->required(),
-            TextInput::make('quantity')
-                ->numeric()
-                ->minValue(0)
-                ->placeholder('10')
-                ->required(),
-            TextInput::make('price')
-                ->numeric()
-                ->minValue(0)
-                ->maxValue(999999,99)
-                ->placeholder('0.0'),
-            Textarea::make('description')->rows(3),
-            FileUpload::make('thumbnail')
-                ->image()
-                ->disk('public')
-                ->directory('thumbnails')
-                ->panelAspectRatio('9:1')
-                ->panelLayout('integrated')
-                ->removeUploadedFileButtonPosition('right')
+        //     TextInput::make('name')
+        //         ->unique(table: Product::class)
+        //         ->required(),
+        //     TextInput::make('quantity')
+        //         ->numeric()
+        //         ->minValue(0)
+        //         ->placeholder('10')
+        //         ->required(),
+        //     TextInput::make('price')
+        //         ->numeric()
+        //         ->minValue(0)
+        //         ->maxValue(999999,99)
+        //         ->placeholder('0.0'),
+        //     Textarea::make('description')->rows(3),
+        //     FileUpload::make('thumbnail')
+        //         ->image()
+        //         ->disk('public')
+        //         ->directory('thumbnails')
+        //         ->panelAspectRatio('9:1')
+        //         ->panelLayout('integrated')
+        //         ->removeUploadedFileButtonPosition('right')
         ];
     }
 
     public function create(): void
     {
-        Product::create($this->form->getState());
+        $gtin = $this->form->getState()['barcode'];
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'X-Cosmos-Token' => 'nn04ILB1iNoBuVbNExQcpw',
+        ])->get("https://api.cosmos.bluesoft.com.br/gtins/$gtin.json");
+        
+        
+        $this->barcode = $gtin;
+        $this->name = $response['description'];
+        $this->quantity = 0;
+        $this->thumbnail = $response['thumbnail'];
+        
+        Product::create([
+            'name' => $this->name,
+            'barcode' => $this->barcode,
+            'quantity' => $this->quantity,
+            'price' => $response['max_price'],
+            'description' => $response['ncm']['full_description'],
+            'thumbnail' => $this->thumbnail,
+            
+        ]);
+
+        // Product::create($this->form->getState());
 
     }
 
