@@ -7,6 +7,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 use Livewire\Component;
 
@@ -29,7 +30,7 @@ class EditProduct extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('name'),
+            TextInput::make('name')->unique(table: Product::class),
             MarkdownEditor::make('description')->required(),
             
         ];
@@ -54,6 +55,7 @@ class EditProduct extends Component implements HasForms
             ->success()
             ->send();
     }
+
 
     public function render()
     {
