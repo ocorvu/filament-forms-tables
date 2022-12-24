@@ -16,11 +16,12 @@ class Product extends Model
         'description',
         'quantity',
         'price',
-        'thumbnail'
+        'thumbnail',
+        'categories_id'
     ];
 
-    public function user()
+    public function category()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(Category::class, 'id', 'categories_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -18,6 +19,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
+            'categories_id' => Category::all('id')->first(), 
             'barcode' => random_int(1000000000000, 9999999999999),
             'name' => Str::random(10),
             'quantity' => random_int(0, 1000),

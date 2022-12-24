@@ -25,10 +25,9 @@ return new class extends Migration
             
             $table->unique('name');
 
-            $table->foreignId('user_id')
-                ->nullable()
+            $table->foreignId('categories_id')
                 ->constrained()
-                ->onUpdate('cascade');
+                ->onDelete('cascade');
         });
     }
 
