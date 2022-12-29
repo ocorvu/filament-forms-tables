@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('price')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->string('barcode_image')->nullable();
             $table->timestamps();
             
             $table->unique('name');

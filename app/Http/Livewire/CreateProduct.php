@@ -24,6 +24,7 @@ class CreateProduct extends Component implements HasForms
     public $quantity = '';
     public $price = '';
     public $thumbnail = '';
+    public $barcode_image = '';
 
     protected function getProduct($gtin, $statusCode)
     {
@@ -59,6 +60,7 @@ class CreateProduct extends Component implements HasForms
                         $set('price', $product['max_price']);
                         $set('description', isset($product['ncm']) ? $product['ncm']['full_description'] : '');
                         $set('thumbnail', isset($product['thumbnail']) ? $product['thumbnail'] : '');
+                        $set('barcode_image', $product['barcode_image']);
 
                     } else {
                         Notification::make()
@@ -82,6 +84,7 @@ class CreateProduct extends Component implements HasForms
                 ->placeholder('0.0'),
             Textarea::make('description')->rows(3),
             TextInput::make('thumbnail'),
+            TextInput::make('barcode_image'),
 
         ];
     }

@@ -29,6 +29,7 @@ class ProductDetails extends Component
             'barcode' => $this->product->barcode,
             'quantity' => $this->product->quantity,
             'price' => $this->product->price,
+            'barcode_image' => $this->product->barcode_image,
         ]);
     }
 }
