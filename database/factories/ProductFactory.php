@@ -19,8 +19,8 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'categories_id' => Category::all('id')->first(), 
-            'barcode' => random_int(1000000000000, 9999999999999),
+            'category_id' => Category::first()->id, 
+            'barcode' => random_int(100000000000, 9999999999999),
             'name' => Str::random(10),
             'quantity' => random_int(0, 1000),
             'price' => rand(0, 1000),
