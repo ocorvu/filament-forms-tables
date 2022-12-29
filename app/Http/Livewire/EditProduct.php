@@ -38,6 +38,7 @@ class EditProduct extends Component implements HasForms
             TextInput::make('barcode')
                 ->length(13)
                 ->autofocus()
+                ->unique(table: Product::class, ignorable: $this->product)
                 ->required(),
             TextInput::make('name')
                 ->required(),
