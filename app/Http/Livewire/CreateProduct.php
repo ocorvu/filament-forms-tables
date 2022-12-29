@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -18,7 +17,7 @@ class CreateProduct extends Component implements HasForms
 {
     use InteractsWithForms;
  
-    public $categories_id = '';
+    public $category_id = '';
     public $barcode = '';
     public $name = '';
     public $description = '';
@@ -26,19 +25,48 @@ class CreateProduct extends Component implements HasForms
     public $price = '';
     public $thumbnail = '';
 
+    protected function getProduct($gtin, $statusCode)
+    {
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'X-Cosmos-Token' => 'nn04ILB1iNoBuVbNExQcpw',
+        ])->get("https://api.cosmos.bluesoft.com.br/gtins/$gtin.json");
+
+        if ($response->status() === $statusCode) {
+            return $response;
+
+        } else false;
+    }
+
     protected function getFormSchema(): array
     {
         return [
-            Select::make('categories_id')
+            Select::make('category_id')
                 ->label('Category')
                 ->options(Category::all()->pluck('name', 'id'))
                 ->searchable()
                 ->disablePlaceholderSelection(),
             TextInput::make('barcode')
-                ->length(13)
+                ->maxLength(13)
+                ->minLength(12)
                 ->autofocus()
                 ->unique(table: Product::class)
-                ->required(),
+                ->required()
+                ->reactive()
+                ->afterStateUpdated(function ($state, $set) {                   
+                    if($product = $this->getProduct($state, 200)) {
+                        $set('name', $product['description']);
+                        $set('price', $product['max_price']);
+                        $set('description', isset($product['ncm']) ? $product['ncm']['full_description'] : '');
+                        $set('thumbnail', isset($product['thumbnail']) ? $product['thumbnail'] : '');
+
+                    } else {
+                        Notification::make()
+                            ->title('Product Not Found')
+                            ->danger()
+                            ->send();
+                    }
+                }),
             TextInput::make('name')
                 ->unique(table: Product::class)
                 ->required(),
@@ -53,42 +81,13 @@ class CreateProduct extends Component implements HasForms
                 ->maxValue(999999,99)
                 ->placeholder('0.0'),
             Textarea::make('description')->rows(3),
-            FileUpload::make('thumbnail')
-                ->image()
-                ->disk('public')
-                ->directory('thumbnails')
-                ->panelAspectRatio('9:1')
-                ->panelLayout('integrated')
-                ->removeUploadedFileButtonPosition('right')
-                ->default('placeholder-thumbnail-document.png')
+            TextInput::make('thumbnail'),
+
         ];
     }
 
     public function create(): void
     {
-        // $gtin = $this->form->getState();
-
-        // $response = Http::withHeaders([
-        //     'Content-Type' => 'application/json',
-        //     'X-Cosmos-Token' => 'nn04ILB1iNoBuVbNExQcpw',
-        // ])->get("https://api.cosmos.bluesoft.com.br/gtins/$gtin.json");
-        
-        
-        // $this->barcode = $gtin;
-        // $this->name = $response['description'];
-        // $this->quantity = 0;
-        // $this->thumbnail = $response['thumbnail'];
-        
-        // Product::create([
-        //     'name' => $this->name,
-        //     'barcode' => $this->barcode,
-        //     'quantity' => $this->quantity,
-        //     'price' => $response['max_price'],
-        //     'description' => $response['ncm']['full_description'],
-        //     'thumbnail' => $this->thumbnail,
-            
-        // ]);
-        
         Product::create($this->form->getState());
 
     }
