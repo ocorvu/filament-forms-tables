@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -20,7 +23,7 @@ class EditProduct extends Component implements HasForms
     public $name;
     public $description;
 
-    public function mount(Product $product): void
+    public function mount(): void
     {
         $this->form->fill([
             'barcode' => $this->product->barcode,
@@ -28,13 +31,17 @@ class EditProduct extends Component implements HasForms
             'quantity' => $this->product->quantity,
             'price' => $this->product->price,
             'description' => $this->product->description,
-            'thumbnail' => $this->product->thumbnail,
-
+            'category_id' => $this->product->category_id,
         ]);
     }
     protected function getFormSchema(): array
     {
         return [
+            Select::make('category_id')
+            ->label('Category')
+            ->options(Category::all()->pluck('name', 'id'))
+            ->searchable(),
+            // ->disablePlaceholderSelection()
             TextInput::make('barcode')
                 ->length(13)
                 ->autofocus()
@@ -59,7 +66,9 @@ class EditProduct extends Component implements HasForms
                 ->directory('thumbnails')
                 ->panelAspectRatio('9:1')
                 ->panelLayout('integrated')
-                ->removeUploadedFileButtonPosition('right')
+                ->removeUploadedFileButtonPosition('right'),
+            Placeholder::make('Current Thumbnail')
+                ->content($this->product->thumbnail)
         ];
     }
 
@@ -67,12 +76,13 @@ class EditProduct extends Component implements HasForms
     {   
         $data = $this->form->getState();
         
+        $product->category_id = $data['category_id'];
         $product->barcode = $data['barcode'];
         $product->name = $data['name'];
         $product->quantity = $data['quantity'];
         $product->price = $data['price'];
         $product->description = $data['description'];
-        $product->thumbnail = $data['thumbnail'];
+        $product->thumbnail = empty($data['thumbnail']) ? $product->thumbnail : $data['thumbnail'];
         
         $product->save();
     }
