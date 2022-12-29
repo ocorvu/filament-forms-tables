@@ -20,12 +20,12 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('quantity');
             $table->decimal('price')->nullable();
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
             
             $table->unique('name');
 
-            $table->foreignId('categories_id')
+            $table->foreignId('category_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
