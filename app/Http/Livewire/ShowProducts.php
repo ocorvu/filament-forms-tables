@@ -4,14 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 
-use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Actions\Action;
-
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
@@ -53,7 +51,8 @@ class ShowProducts extends Component implements HasTable, HasForms
     {
         return [ 
             TextColumn::make('index')->rowIndex(),
-            TextColumn::make('name')->color('primary'),
+            TextColumn::make('name')->searchable(),
+            TextColumn::make('category.name'),
             TextColumn::make('description')->wrap()->words(10),
             TextColumn::make('created_at')->dateTime('d/m/Y h:m:s')->label('Criado em'),
             TextColumn::make('updated_at')->since(),
