@@ -18,6 +18,8 @@ class CreateCategory extends Component implements HasForms
     {
         return [
             TextInput::make('name')
+            ->required()
+            ->unique(table: Category::class)
         ];
     }
 
