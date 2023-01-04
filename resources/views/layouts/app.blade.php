@@ -25,45 +25,26 @@
             <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
           </div>
           {{-- Products --}}
-          <div x-data="{open: false}" class="relative">
-            <button 
+            <a href="{{route('products.show')}}"
               class="ml-10 
               @if (request()->route()->uri === 'products')
                 active
               @else
                 not-active
-              @endif"
-              x-on:click="open = ! open">
+              @endif">
               Products
-            </button>
-            <div class="absolute left-0 ml-10 active" x-show="open">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <div class="flex flex-col">
-                <a href="{{ route('products.show') }}" class="not-active">All</a>
-                <a href="{{ route('products.create') }}" class="not-active">New</a>
-              </div>
-            </div>
-          </div>
+          </a>
           {{-- Categories --}}
-          <div x-data="{open: false}" class="relative">
-            <button 
+            <a href="{{route('categories.show')}}"
               class="ml-10 
               @if (request()->route()->uri === 'categories')
                 active
               @else
                 not-active
               @endif"
-              x-on:click="open = ! open">
+              >
               Categories
-            </button>
-            <div class="absolute left-0 ml-10 active" x-show="open">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <div class="flex flex-col">
-                <a href="{{ route('categories.show') }}" class="not-active">All</a>
-                <a href="{{ route('categories.create') }}" class="not-active">New</a>
-              </div>
-            </div>
-          </div>
+            </a>
           </div>
         </div>
       </div>
