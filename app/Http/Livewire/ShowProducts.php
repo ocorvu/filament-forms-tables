@@ -12,6 +12,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,7 +42,7 @@ class ShowProducts extends Component implements HasTable, HasForms
                         fn (Builder $query): Builder => $query->where('quantity', '<=', '10'),
                     )->when(
                         $data['ok'],
-                        fn (Builder $query): Builder => $query->whereBetween('quantity', [10, 50]),
+                        fn (Builder $query): Builder => $query->whereBetween('quantity', [10, 49]),
                     )->when(
                         $data['full'],
                         fn (Builder $query): Builder => $query->where('quantity', '>=', '50'),
@@ -118,9 +119,14 @@ class ShowProducts extends Component implements HasTable, HasForms
             TextColumn::make('index')->rowIndex()->alignCenter()->color('primary'),
             TextColumn::make('name')->searchable(),
             TextColumn::make('category.name'),
-            TextColumn::make('quantity')->alignCenter(),
+            BadgeColumn::make('quantity')->colors([
+                'primary',
+                'danger' => static fn ($state): bool => $state <= 10 ,
+                'success' => static fn ($state): bool => $state >= 50,
+            ]),
             TextColumn::make('created_at')->dateTime('d/m/Y')->label('Criado em'),
             TextColumn::make('updated_at')->since(),
+            
         ]; 
     }
     
